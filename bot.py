@@ -42,12 +42,13 @@ def receive_all(message):
     commands = load_commands()
     for command in commands:
         if message.text not in command["message"]:
-            bot.reply_to(message, "Sorry command not found")
+            response = "Sorry, command not found"
+        else:
+            method_to_call = getattr(functions, command["function"])
+            response = method_to_call(message)
         # end if
-        method_to_call = getattr(functions, command["function"])
-        response = method_to_call(message)
-        bot.reply_to(message, response)
     # end for
+    bot.reply_to(message, response)
 # end def
 
 # start polling bot here
